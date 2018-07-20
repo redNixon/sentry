@@ -89,6 +89,7 @@ export default class OrganizationDiscover extends React.Component {
         ...queryBuilder.getExternal(),
         groupby: ['time'],
         rollup: 60 * 60 * 24,
+        orderby: 'time',
       };
 
       queryBuilder.fetch(chartQuery).then(
@@ -177,6 +178,8 @@ export default class OrganizationDiscover extends React.Component {
       label: name,
     }));
 
+    console.log('query is...', query);
+    console.log('Chart Data', chartData);
     return (
       <Discover className="organization-home">
         <Header

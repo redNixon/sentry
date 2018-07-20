@@ -32,3 +32,81 @@ describe('get query URL string from query', function() {
     expect(getQueryStringFromQuery(query)).toEqual(queryString);
   });
 });
+
+const sampleQueryData = [
+  {
+    'exception_stacks.type': 'ZeroDivisionError',
+    platform: 'python',
+    count: 6,
+    time: 1531094400,
+  },
+  {
+    'exception_stacks.type': 'Type Error',
+    platform: 'javascript',
+    count: 6,
+    time: 1531094400,
+  },
+  {
+    'exception_stacks.type': 'Exception',
+    platform: 'php',
+    count: 6,
+    time: 1531094400,
+  },
+  {
+    'exception_stacks.type': 'SnubaError',
+    platform: 'python',
+    count: 14,
+    time: 1531094400,
+  },
+  {
+    'exception_stacks.type': 'ZeroDivisionError',
+    platform: 'python',
+    count: 20,
+    time: 1532070000,
+  },
+  {
+    'exception_stacks.type': 'Type Error',
+    platform: 'javascript',
+    count: 5,
+    time: 1532070000,
+  },
+  {
+    'exception_stacks.type': 'Exception',
+    platform: 'php',
+    count: 8,
+    time: 1532070000,
+  },
+  {
+    'exception_stacks.type': 'SnubaError',
+    platform: 'python',
+    count: 30,
+    time: 1532070000,
+  },
+];
+
+const fields = ['platform', 'exception_stacks.type'];
+
+function getDataForChart(queryData, groupbyFields) {
+  const output = {};
+  queryData.forEach(data => {
+    const key = groupbyFields.map(field => data[field]).join(',');
+    if (key in output) {
+      output[key].count.push(data.count);
+    } else {
+      output[key] = {count: [data.count]};
+    }
+  });
+
+  return output;
+}
+
+describe('getDataForChart()', function() {
+  const expectedData = {
+    'python,ZeroDivisionError': {count: [6, 20]},
+    'python,SnubaError': {count: [14, 30]},
+    'javascript,Type Error': {count: [6, 5]},
+    'php,Exception': {count: [6, 8]},
+  };
+
+  expect(getDataForChart(sampleQueryData, fields)).toEqual(expectedData);
+});

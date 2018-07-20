@@ -6,6 +6,7 @@ import {Box} from 'grid-emotion';
 
 import theme from 'app/utils/theme';
 import AutoSelectText from 'app/components/autoSelectText';
+
 import {getDisplayValue} from './utils';
 
 /**
