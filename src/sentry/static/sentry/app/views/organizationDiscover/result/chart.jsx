@@ -29,6 +29,7 @@ export default class Result extends React.Component {
 
   getDataForChart(queryData, groupbyFields) {
     const {aggregations} = this.props.query;
+    // We only chart the first aggregation for now
     const aggregate = aggregations[0][2];
 
     const rawDates = [...new Set(queryData.map(entry => entry.time))];
@@ -69,7 +70,9 @@ export default class Result extends React.Component {
 
     const output = {};
     queryData.forEach(data => {
-      const key = groupbyFields.map(field => this.getLabel(data[field])).join(',');
+      const key = groupbyFields.length
+        ? groupbyFields.map(field => this.getLabel(data[field])).join(',')
+        : aggregate;
       if (key in output) {
         output[key].data.push({
           value: data[aggregate],
