@@ -139,7 +139,10 @@ const OrganizationHealthErrors = styled(
                         return typeof value === 'string' ? (
                           value
                         ) : (
-                          <IdBadge user={value.user} displayName={value.label} />
+                          <IdBadge
+                            user={value.user}
+                            displayName={value.user && value.user.label}
+                          />
                         );
                       }}
                       renderDataCell={({getValue, value, columnIndex}) => {
