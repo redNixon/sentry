@@ -77,43 +77,25 @@ const OrganizationHealthErrors = styled(
             <HealthRequest tag="release" timeseries={true} interval="1d">
               {({data, loading}) => {
                 if (!data) return null;
-                const releaseMap = new Map();
+                const releaseSet = new Set();
                 const timestampMap = new Map();
                 data.forEach(([timestamp, resultsForTimestamp]) => {
-                  const total = resultsForTimestamp.reduce(
-                    (sum, {count}) => sum + count,
-                    0
-                  );
-
                   if (!resultsForTimestamp.length) {
                     return;
                   }
 
                   resultsForTimestamp.forEach(({count, release}) => {
-                    if (!releaseMap.has(release.shortVersion)) {
-                      releaseMap.set(release.shortVersion, []);
-                    }
-
-                    let arr = releaseMap.get(release.shortVersion);
-                    let value = Math.round(count / total * 10000) / 100;
-                    let valueObj = {
-                      value,
-                      category: moment(timestamp * 1000).format('MMM D'),
-                    };
-
-                    timestampMap.set(`${timestamp}-${release.shortVersion}`, value);
-                    arr.push(valueObj);
+                    releaseSet.add(release.shortVersion);
+                    timestampMap.set(`${timestamp}-${release.shortVersion}`, count);
                   });
                 });
 
-                const releases = Array.from(releaseMap.keys());
-
-                const seriesByRelease = releases.map(release => {
+                const seriesByRelease = Array.from(releaseSet).map(release => {
                   return {
                     seriesName: release,
                     data: data.map(([timestamp]) => {
                       return {
-                        category: moment(timestamp * 1000).format('MMM D'),
+                        category: timestamp,
                         value: timestampMap.get(`${timestamp}-${release}`) || 0,
                       };
                     }),
