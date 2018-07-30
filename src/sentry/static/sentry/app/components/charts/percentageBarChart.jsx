@@ -77,6 +77,17 @@ export default class PercentageBarChart extends React.Component {
   }
 
   render() {
+    // Bar outline/filler
+    // const fillerSeries = BarSeries({
+    // stack: 'percentageBarChartStack',
+    // silent: true,
+    // itemStyle: {
+    // normal: {
+    // color: '#eee',
+    // }
+    // },
+    // data: totalsArray.map(([,total]) => total
+
     return (
       <BaseChart
         {...this.props}
