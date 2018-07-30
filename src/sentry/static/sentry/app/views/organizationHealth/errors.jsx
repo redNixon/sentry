@@ -1,5 +1,4 @@
 import {Box, Flex} from 'grid-emotion';
-import {flatten} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
