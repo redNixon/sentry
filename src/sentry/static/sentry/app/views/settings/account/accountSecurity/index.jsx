@@ -5,6 +5,7 @@ import {Box, Flex} from 'grid-emotion';
 import React from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie';
 
 import {t} from 'app/locale';
 import AsyncView from 'app/views/asyncView';
@@ -48,6 +49,7 @@ class AccountSecurity extends AsyncView {
       onDisable,
     } = this.props;
     let isEmpty = !authenticators.length;
+    let orgInvite = Cookies.get('org-invite');
 
     return (
       <div>
