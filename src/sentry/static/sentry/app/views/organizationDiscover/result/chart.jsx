@@ -41,7 +41,7 @@ export default class Result extends React.Component {
       const val = this.getLabel(data[aggregate]);
       const idx = rawDates.indexOf(data.time);
 
-      if (!(key in output)) {
+      if (!output.hasOwnProperty(key)) {
         output[key] = {};
       }
       output[key][idx] = val;
@@ -98,7 +98,7 @@ export default class Result extends React.Component {
 
     return (
       <div>
-        <LineChart dates={dates} chartData={chartData} style={{height: 300}} />
+        <LineChart xAxisData={dates} chartData={chartData} style={{height: 300}} />
         <BarChart series={barData} stacked={true} style={{height: 300}} />
       </div>
     );
